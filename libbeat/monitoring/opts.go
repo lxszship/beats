@@ -20,6 +20,7 @@ package monitoring
 // Option type for passing additional options to NewRegistry.
 type Option func(options) options
 
+//immutable
 type options struct {
 	publishExpvar bool
 	mode          Mode

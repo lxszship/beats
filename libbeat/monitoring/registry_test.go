@@ -20,6 +20,8 @@
 package monitoring
 
 import (
+	"expvar"
+	"fmt"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -133,6 +135,10 @@ func TestRegistryIter(t *testing.T) {
 		i := NewInt(Default, name, Report)
 		i.Add(v)
 	}
+	s := NewString(Default, "v4", Report, PublishExpvar)
+	s.Set("hello world")
+
+	fmt.Printf("%v\n", expvar.Get("v4"))
 
 	collected := map[string]int64{}
 	Do(Full, func(name string, v interface{}) {

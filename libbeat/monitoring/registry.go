@@ -33,9 +33,10 @@ type Registry struct {
 	name    string
 	entries map[string]entry
 
-	opts *options
+	opts *options				//immutable
 }
 
+//immutable
 type entry struct {
 	Var
 	Mode
@@ -61,6 +62,14 @@ func (r *Registry) Do(mode Mode, f func(string, interface{})) {
 // Visit uses the Visitor interface to iterate the complete metrics hierarchies.
 // In case of the visitor reporting an error, Visit will return immediately,
 // reporting the very same error.
+
+// visit registry
+// at the same time, visit unregistry Var such that the specified mode greats and equals Var.mode
+// the callback order:
+//     Visitor.OnRegistryStart
+//     Visitor.OnKey
+//     Var.Visit
+//     Visitor.OnRegistryFinished
 func (r *Registry) Visit(mode Mode, vs Visitor) {
 	r.doVisit(mode, vs)
 }
